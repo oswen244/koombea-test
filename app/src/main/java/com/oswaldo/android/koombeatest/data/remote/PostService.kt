@@ -3,6 +3,7 @@ package com.oswaldo.android.koombeatest.data.remote
 import com.oswaldo.android.koombeatest.data.models.PostResponse
 import com.oswaldo.android.koombeatest.utils.Constants.URL
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -18,6 +19,7 @@ object ApiClient {
             .addConverterFactory(GsonConverterFactory.create())
 
         val httpClient: OkHttpClient.Builder = OkHttpClient.Builder()
+        httpClient.addInterceptor(interceptor())
 
         val retrofit: Retrofit = builder.client(httpClient.build()).build()
         servicesApiInterface = retrofit.create(
@@ -26,6 +28,11 @@ object ApiClient {
         return servicesApiInterface as PostService
     }
 
+    private fun interceptor(): HttpLoggingInterceptor {
+        val httpLoggingInterceptor = HttpLoggingInterceptor()
+        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        return httpLoggingInterceptor
+    }
 
     interface PostService {
         @GET("posts")

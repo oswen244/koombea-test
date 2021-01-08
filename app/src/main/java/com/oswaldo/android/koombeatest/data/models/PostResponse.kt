@@ -4,4 +4,4 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class PostResponse(val data: List<User>, val statusCode: Int?): Parcelable
+data class PostResponse(val data: List<User>, val statusCode: Int?, val statusMessage: String): Parcelable

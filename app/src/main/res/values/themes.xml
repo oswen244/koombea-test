@@ -13,4 +13,21 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="ShapeAppearance.App.CircleImageView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="user_name">
+        <item name="fontFamily">sans-serif-condensed</item>
+        <item name="android:textSize">@dimen/name_size</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="user_email">
+        <item name="fontFamily">sans-serif-light</item>
+        <item name="android:textSize">@dimen/email_size</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
 </resources>
