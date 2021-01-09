@@ -37,7 +37,8 @@ ext{
     lifecycleKtxVersion = '2.2.0'
     viewmodelKtxVersion = '2.2.0'
     archLifecycleVersion = '2.2.0'
-    glideVersion='4.9.0'
-    okhttp3='3.4.1'
-    swipe='1.1.0'
+    glideVersion='4.11.0'
+    okhttp3 ='3.4.1'
+    swipe ='1.1.0'
+    couchbase = '2.6.0'
 }

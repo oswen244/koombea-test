@@ -6,6 +6,7 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.oswaldo.android.koombeatest.R
+import com.oswaldo.android.koombeatest.data.local.DatabaseManager
 import com.oswaldo.android.koombeatest.databinding.ActivityMainBinding
 import com.oswaldo.android.koombeatest.presentation.adapters.PostsAdapter
 import com.oswaldo.android.koombeatest.viewModels.PostsViewModel
