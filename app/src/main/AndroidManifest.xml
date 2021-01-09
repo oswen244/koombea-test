@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:name=".KApplication"
         android:theme="@style/Theme.KoombeaTest">
-        <activity android:name=".presentation.MainActivity">
+        <activity android:name=".presentation.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

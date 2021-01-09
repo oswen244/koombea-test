@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -15,6 +16,16 @@ import kotlinx.android.synthetic.main.item_post.view.*
 
 class PostsAdapter(var postList: List<User>): RecyclerView.Adapter<PostsAdapter.PostViewHolder>() {
 
+    var onItemClickListener: OnItemClickListener? = null
+
+    fun setOnclickListener(listener: OnItemClickListener?){
+        onItemClickListener = listener
+    }
+
+    interface OnItemClickListener {
+        fun onFirstPicClick(image: String)
+    }
+
     class PostViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         private val profilePic: ImageView = itemView.iv_profile_pic
         private val name: TextView = itemView.tv_user_name
@@ -22,7 +33,7 @@ class PostsAdapter(var postList: List<User>): RecyclerView.Adapter<PostsAdapter.
         private val date: TextView = itemView.tv_date
         private val firstPic: ImageView = itemView.iv_big_one
 
-        fun bind(post: User){
+        fun bind(post: User, listener: OnItemClickListener?){
             Glide.with(itemView.context).load(post.profile_pic).diskCacheStrategy(DiskCacheStrategy.DATA).into(
                 profilePic
             )
@@ -33,6 +44,10 @@ class PostsAdapter(var postList: List<User>): RecyclerView.Adapter<PostsAdapter.
             Glide.with(itemView.context).load(post.post.pics[0]).diskCacheStrategy(DiskCacheStrategy.DATA).into(
                 firstPic
             )
+
+            firstPic.setOnClickListener {
+                listener?.onFirstPicClick(post.post.pics[0])
+            }
         }
     }
 
@@ -42,7 +57,7 @@ class PostsAdapter(var postList: List<User>): RecyclerView.Adapter<PostsAdapter.
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
-        holder.bind(postList[position])
+        holder.bind(postList[position], onItemClickListener)
     }
 
     override fun getItemCount(): Int = postList.size
