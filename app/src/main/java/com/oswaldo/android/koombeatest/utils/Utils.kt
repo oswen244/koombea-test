@@ -1,12 +1,18 @@
 package com.oswaldo.android.koombeatest.utils
 
+import android.view.View
 import com.couchbase.lite.Document
 import com.couchbase.lite.MutableDocument
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.gson.Gson
 import com.oswaldo.android.koombeatest.KApplication
 import com.oswaldo.android.koombeatest.data.local.DatabaseManager
 import com.oswaldo.android.koombeatest.data.models.PostResponse
 import com.oswaldo.android.koombeatest.data.models.User
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.HashMap
 
 
 object Utils {
@@ -17,26 +23,6 @@ object Utils {
         val map: HashMap<String, Any> = HashMap<String, Any>()
         map["data"] = data
         databaseManager?.saveDocument(map)
-        /*val dataMap: HashMap<String, Any> = HashMap()
-        var userMap: HashMap<String, Any>
-        var postMap: HashMap<String, Any>
-        data?.forEach { user ->
-            userMap = HashMap()
-            postMap = HashMap()
-            userMap["uid"] = user.uid
-            userMap["name"] = user.name
-            userMap["email"] = user.email!!
-            userMap["profilePic"] = user.profile_pic
-            postMap["id"] = user.post.id
-            postMap["date"] = user.post.date
-            postMap["pics"] = user.post.pics
-            userMap["posts"] = postMap
-
-            dataMap["$user.uid"] = userMap
-        }
-        map["data"] = dataMap
-        databaseManager?.saveDocument(map)*/
-
     }
 
     fun getLocalDocument(): PostResponse?{
@@ -49,5 +35,33 @@ object Utils {
         }
 
         return response!!
+    }
+
+    fun shimmerStart(shimmer: ShimmerFrameLayout){
+        shimmer.startShimmerAnimation()
+        shimmer.visibility = View.VISIBLE
+    }
+
+    fun shimmerStop(shimmer: ShimmerFrameLayout){
+        shimmer.stopShimmerAnimation()
+        shimmer.visibility = View.GONE
+    }
+
+    fun parseDate(
+        inputDateString: String?,
+        inputFormat: String,
+        outputFormat: String
+    ): String? {
+        val inputDateFormat = SimpleDateFormat(inputFormat, Locale.US)
+        val outputDateFormat = SimpleDateFormat(outputFormat, Locale.US)
+        var date: Date? = null
+        var outputDateString: String? = null
+        try {
+            date = inputDateFormat.parse(inputDateString)
+            outputDateString = outputDateFormat.format(date)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+        return outputDateString
     }
 }

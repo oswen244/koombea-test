@@ -41,4 +41,5 @@ ext{
     okhttp3 ='3.4.1'
     swipe ='1.1.0'
     couchbase = '2.6.0'
+    shimmerVersion = '0.1.0@aar'
 }

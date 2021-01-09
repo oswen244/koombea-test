@@ -1,6 +1,5 @@
 package com.oswaldo.android.koombeatest.presentation.adapters
 
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +10,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.oswaldo.android.koombeatest.R
 import com.oswaldo.android.koombeatest.data.models.User
+import com.oswaldo.android.koombeatest.utils.Utils.parseDate
 import kotlinx.android.synthetic.main.item_post.view.*
-import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
-class PostsAdapter (var postList: List<User>): RecyclerView.Adapter<PostsAdapter.PostViewHolder>() {
+class PostsAdapter(var postList: List<User>): RecyclerView.Adapter<PostsAdapter.PostViewHolder>() {
 
     class PostViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         private val profilePic: ImageView = itemView.iv_profile_pic
@@ -26,11 +23,16 @@ class PostsAdapter (var postList: List<User>): RecyclerView.Adapter<PostsAdapter
         private val firstPic: ImageView = itemView.iv_big_one
 
         fun bind(post: User){
-            Glide.with(itemView.context).load(post.profile_pic).diskCacheStrategy(DiskCacheStrategy.DATA).into(profilePic)
+            Glide.with(itemView.context).load(post.profile_pic).diskCacheStrategy(DiskCacheStrategy.DATA).into(
+                profilePic
+            )
             name.text = post.name
             email.text = post.email
-            //date.text = post.post.date
-            Glide.with(itemView.context).load(post.post.pics[0]).diskCacheStrategy(DiskCacheStrategy.DATA).into(firstPic)
+            date.text = parseDate(post.post.date.replace(" (Colombia Standard Time)", ""),
+                "EEE MMM dd yyyy HH:mm:ss Z", "MMM dd")
+            Glide.with(itemView.context).load(post.post.pics[0]).diskCacheStrategy(DiskCacheStrategy.DATA).into(
+                firstPic
+            )
         }
     }
 

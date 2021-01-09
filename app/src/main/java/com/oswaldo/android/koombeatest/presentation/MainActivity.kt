@@ -9,6 +9,7 @@ import com.oswaldo.android.koombeatest.R
 import com.oswaldo.android.koombeatest.data.local.DatabaseManager
 import com.oswaldo.android.koombeatest.databinding.ActivityMainBinding
 import com.oswaldo.android.koombeatest.presentation.adapters.PostsAdapter
+import com.oswaldo.android.koombeatest.utils.Utils
 import com.oswaldo.android.koombeatest.viewModels.PostsViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -31,11 +32,17 @@ class MainActivity : AppCompatActivity() {
         postsViewModel.postList.observe(this, Observer {
             adapter.updateList(it)
             binding.refreshView.isRefreshing = false
+            binding.rvPosts.visibility = View.VISIBLE
+
         })
 
         postsViewModel.isViewLoading.observe(this, Observer {
-            val visibility = if(it) View.VISIBLE else View.GONE
-            binding.pbLoading.visibility = visibility
+            if(it){
+                binding.rvPosts.visibility = View.GONE
+                Utils.shimmerStart(binding.shimmerLoading)
+            }else{
+                Utils.shimmerStop(binding.shimmerLoading)
+            }
         })
     }
 

@@ -76,4 +76,7 @@ dependencies {
 
     //Couchbase lite
     implementation "com.couchbase.lite:couchbase-lite-android:$rootProject.couchbase"
+
+    //Shimmer
+    implementation "com.facebook.shimmer:shimmer:$rootProject.shimmerVersion"
 }
