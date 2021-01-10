@@ -1,5 +1,7 @@
 package com.oswaldo.android.koombeatest.utils
 
+import android.app.Activity
+import android.util.DisplayMetrics
 import android.view.View
 import com.couchbase.lite.Document
 import com.couchbase.lite.MutableDocument
@@ -63,5 +65,11 @@ object Utils {
             e.printStackTrace()
         }
         return outputDateString
+    }
+
+    fun resizeImage(view: View): Int{
+        val displaymetrics = DisplayMetrics()
+        (view.context as Activity).windowManager.defaultDisplay.getMetrics(displaymetrics)
+        return (displaymetrics.widthPixels / 2)
     }
 }

@@ -59,6 +59,10 @@ class MainActivity : AppCompatActivity() {
             override fun onFirstPicClick(image: String) {
                 ImageFragment.show(supportFragmentManager, image)
             }
+
+            override fun onPicClick(image: String) {
+                ImageFragment.show(supportFragmentManager, image)
+            }
         })
     }
 
