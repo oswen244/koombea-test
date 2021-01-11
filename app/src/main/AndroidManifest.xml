@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:name=".KApplication"
         android:theme="@style/Theme.KoombeaTest">
-        <activity android:name=".presentation.activities.MainActivity">
+        <activity android:name=".presentation.activities.MainActivity"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
