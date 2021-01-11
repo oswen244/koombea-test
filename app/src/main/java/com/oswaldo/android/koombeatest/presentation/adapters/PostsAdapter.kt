@@ -1,7 +1,6 @@
 package com.oswaldo.android.koombeatest.presentation.adapters
 
-import android.app.Activity
-import android.util.DisplayMetrics
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,10 +8,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.oswaldo.android.koombeatest.R
 import com.oswaldo.android.koombeatest.data.models.User
+import com.oswaldo.android.koombeatest.utils.GlideApp
 import com.oswaldo.android.koombeatest.utils.Utils.parseDate
 import com.oswaldo.android.koombeatest.utils.Utils.resizeImage
 import kotlinx.android.synthetic.main.item_post.view.*
@@ -41,43 +41,31 @@ class PostsAdapter(var postList: List<User>): RecyclerView.Adapter<PostsAdapter.
         private lateinit var picturesAdapter: PhotosAdapter
 
         fun bind(post: User, listener: OnItemClickListener?){
-            Glide.with(itemView.context).load(post.profile_pic).diskCacheStrategy(DiskCacheStrategy.DATA).into(
+            GlideApp.with(itemView.context).load(post.profile_pic).diskCacheStrategy(DiskCacheStrategy.DATA).into(
                     profilePic
             )
             name.text = post.name
             email.text = post.email
             date.text = parseDate(post.post.date.replace(" (Colombia Standard Time)", ""),
                     "EEE MMM dd yyyy HH:mm:ss Z", "MMM dd")
-            Glide.with(itemView.context).load(post.post.pics[0]).diskCacheStrategy(DiskCacheStrategy.DATA).into(
-                    firstPic
-            )
+            GlideApp.with(itemView.context)
+                    .load(post.post.pics[0])
+                    .placeholder(ColorDrawable(itemView.context.getColor(R.color.shimmer_loading)))
+                    .apply(RequestOptions().override(1080, 1340))
+                    .into(firstPic)
 
             firstPic.setOnClickListener {
                 listener?.onFirstPicClick(post.post.pics[0])
             }
+            pics.visibility = View.GONE
 
-            when(post.post.pics.size){
-                1 -> {
-                    picturesAdapter = PhotosAdapter(post.post.pics, itemView.context, listener, null)
-                    pics.visibility = View.GONE
-                }
-
-                2 -> {
-                    picturesAdapter = PhotosAdapter(post.post.pics, itemView.context, listener, resizeImage(itemView))
-                    firstPic.visibility = View.GONE
-                }
-
-                3 -> {
-                    picturesAdapter = PhotosAdapter(post.post.pics.subList(1, post.post.pics.size), itemView.context, listener, resizeImage(itemView))
-                }
-
-                else -> {
-                    picturesAdapter = PhotosAdapter(post.post.pics.subList(1, post.post.pics.size), itemView.context, listener, null)
-                }
+            if(post.post.pics.size >= 2){
+                pics.visibility = View.VISIBLE
+                picturesAdapter = PhotosAdapter(post.post.pics, itemView.context, listener, firstPic)
+                pics.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
+                pics.adapter = picturesAdapter
             }
 
-            pics.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-            pics.adapter = picturesAdapter
         }
     }
 

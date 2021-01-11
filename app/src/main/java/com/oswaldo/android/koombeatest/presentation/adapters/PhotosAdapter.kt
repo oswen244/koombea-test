@@ -1,32 +1,38 @@
 package com.oswaldo.android.koombeatest.presentation.adapters
 
 import android.content.Context
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.oswaldo.android.koombeatest.R
+import com.oswaldo.android.koombeatest.utils.GlideApp
+import com.oswaldo.android.koombeatest.utils.Utils
 import kotlinx.android.synthetic.main.item_picture.view.*
 
-class PhotosAdapter(private val images: List<String>,
+class PhotosAdapter(private var images: List<String>,
                     private val context: Context,
                     private val listener: PostsAdapter.OnItemClickListener?,
-                    private val imageSize: Int?): RecyclerView.Adapter<PhotosAdapter.PicturesViewHolder>() {
+                    private val bigPicture: View): RecyclerView.Adapter<PhotosAdapter.PicturesViewHolder>() {
 
     class PicturesViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         private val image: ImageView = itemView.iv_pic
         private val pictureContainer: ConstraintLayout = itemView.pic_container
 
-        fun bind(urlImage: String, context: Context, imageSize: Int?, listener: PostsAdapter.OnItemClickListener?){
-            Glide.with(context).load(urlImage).diskCacheStrategy(DiskCacheStrategy.DATA).into(image)
+        fun bind(urlImage: String, context: Context, imagesSize: Int, bigPicture: View, listener: PostsAdapter.OnItemClickListener?){
+            GlideApp.with(context)
+                .load(urlImage)
+                .diskCacheStrategy(DiskCacheStrategy.DATA)
+                .placeholder(ColorDrawable(context.getColor(R.color.shimmer_loading)))
+                .into(image)
 
-            imageSize?.let {
-                pictureContainer.layoutParams.height = imageSize
-                pictureContainer.layoutParams.width = imageSize
+            if(imagesSize == 2 || imagesSize == 3){
+                pictureContainer.layoutParams.height = Utils.resizeImage(pictureContainer)
+                pictureContainer.layoutParams.width = Utils.resizeImage(pictureContainer)
             }
 
             image.setOnClickListener {
@@ -41,8 +47,23 @@ class PhotosAdapter(private val images: List<String>,
     }
 
     override fun onBindViewHolder(holder: PicturesViewHolder, position: Int) {
-        holder.bind(images[position], context, imageSize, listener)
+        holder.bind(images[position], context, images.size, bigPicture, listener)
     }
 
-    override fun getItemCount(): Int = images.size
+    override fun getItemCount(): Int {
+        if(images.size == 2){
+            bigPicture.visibility = View.GONE
+        }else{
+            bigPicture.visibility = View.VISIBLE
+        }
+        return images.size
+    }
+
+    private fun updateList(): List<String>{
+        if(images.size >= 3){
+            return images.subList(1, images.size)
+        }
+
+        return images
+    }
 }

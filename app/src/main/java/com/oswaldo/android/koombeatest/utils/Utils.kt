@@ -1,16 +1,17 @@
 package com.oswaldo.android.koombeatest.utils
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.util.DisplayMetrics
 import android.view.View
+import androidx.core.util.Preconditions.checkArgument
 import com.couchbase.lite.Document
-import com.couchbase.lite.MutableDocument
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.gson.Gson
 import com.oswaldo.android.koombeatest.KApplication
 import com.oswaldo.android.koombeatest.data.local.DatabaseManager
 import com.oswaldo.android.koombeatest.data.models.PostResponse
-import com.oswaldo.android.koombeatest.data.models.User
+import java.lang.Integer.parseInt
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -50,9 +51,9 @@ object Utils {
     }
 
     fun parseDate(
-        inputDateString: String?,
-        inputFormat: String,
-        outputFormat: String
+            inputDateString: String?,
+            inputFormat: String,
+            outputFormat: String
     ): String? {
         val inputDateFormat = SimpleDateFormat(inputFormat, Locale.US)
         val outputDateFormat = SimpleDateFormat(outputFormat, Locale.US)
@@ -64,12 +65,21 @@ object Utils {
         } catch (e: ParseException) {
             e.printStackTrace()
         }
-        return outputDateString
+        return outputDateString + getDayOfMonthSuffix(parseInt(outputDateString?.last().toString()))
     }
 
     fun resizeImage(view: View): Int{
-        val displaymetrics = DisplayMetrics()
-        (view.context as Activity).windowManager.defaultDisplay.getMetrics(displaymetrics)
-        return (displaymetrics.widthPixels / 2)
+        val displayMetrics = DisplayMetrics()
+        (view.context as Activity).windowManager.defaultDisplay.getMetrics(displayMetrics)
+        return (displayMetrics.widthPixels / 2) - 48
+    }
+
+    private fun getDayOfMonthSuffix(n: Int): String {
+        return  when (n) {
+            1 -> "st"
+            2 -> "nd"
+            3 -> "rd"
+            else -> "th"
+        }
     }
 }

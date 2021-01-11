@@ -9,7 +9,6 @@
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:padding="@dimen/small_space"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -18,6 +17,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:scaleType="centerCrop"
+            android:layout_margin="@dimen/small_space"
             app:srcCompat="@drawable/ic_launcher_background"
             app:shapeAppearance="@style/ShapeAppearance.App.CircleImageView"
             app:layout_constraintStart_toStartOf="parent"
@@ -55,6 +55,7 @@
             android:id="@+id/tv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/small_space"
             app:layout_constraintBottom_toBottomOf="@+id/iv_profile_pic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/iv_profile_pic"
@@ -64,6 +65,7 @@
             android:id="@+id/iv_big_one"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/small_space"
             android:scaleType="fitCenter"
             android:layout_marginTop="@dimen/small_space"
             app:layout_constraintTop_toBottomOf="@+id/iv_profile_pic" />
@@ -73,6 +75,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/small_space"
+            android:layout_marginBottom="@dimen/small_space"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_big_one" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
